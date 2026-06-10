@@ -177,19 +177,19 @@ def purge_queue(connection_id: str) -> dict:
                 },
             }
 
-        drop = nipyapi.nifi.FlowfileQueuesApi().create_drop_request(id=connection_id)
+        drop = nipyapi.nifi.FlowFileQueuesApi().create_drop_request(id=connection_id)
         drop_id = drop.drop_request.id
         drop_req = drop
 
         for _ in range(60):  # max 30 s at 0.5 s intervals
             time.sleep(0.5)
-            drop_req = nipyapi.nifi.FlowfileQueuesApi().get_drop_request(
+            drop_req = nipyapi.nifi.FlowFileQueuesApi().get_drop_request(
                 id=connection_id, drop_request_id=drop_id
             )
             if _attr(drop_req, "drop_request", "finished"):
                 break
 
-        nipyapi.nifi.FlowfileQueuesApi().remove_drop_request(
+        nipyapi.nifi.FlowFileQueuesApi().remove_drop_request(
             id=connection_id, drop_request_id=drop_id
         )
         dropped = _attr(drop_req, "drop_request", "dropped_count", default=0)

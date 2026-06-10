@@ -192,6 +192,12 @@ def create_connection(
 
         body = m.ConnectionEntity(
             revision=m.RevisionDTO(version=0),
+            source_id=source_id,
+            source_type=source_type,
+            source_group_id=group_id,
+            destination_id=destination_id,
+            destination_type=destination_type,
+            destination_group_id=group_id,
             component=m.ConnectionDTO(
                 source=m.ConnectableDTO(
                     id=source_id, type=source_type, group_id=group_id
