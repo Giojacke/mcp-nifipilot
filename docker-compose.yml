@@ -1,0 +1,43 @@
+services:
+  nifi:
+    image: apache/nifi:2.2.0
+    hostname: nifi
+    ports:
+      - "8443:8443"
+    env_file:
+      - .env
+    environment:
+      NIFI_WEB_HTTPS_HOST: nifi
+    volumes:
+      - nifi_data:/opt/nifi/nifi-current/data
+    networks:
+      - nifi-mcp-net
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf -k https://nifi:8443/nifi-api/system-diagnostics || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 15
+      start_period: 120s
+
+  mcp:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      MCP_TRANSPORT: sse
+      MCP_PORT: 8000
+      NIFI_URL: https://nifi:8443
+    depends_on:
+      nifi:
+        condition: service_healthy
+    networks:
+      - nifi-mcp-net
+
+networks:
+  nifi-mcp-net:
+    driver: bridge
+
+volumes:
+  nifi_data:

@@ -1,0 +1,17 @@
+{
+  "servers": {
+    "nifi-mcp": {
+      "type": "stdio",
+      "command": "nifi-mcp",
+      "env": {
+        "NIFI_URL": "https://localhost:8443",
+        "NIFI_USERNAME": "admin",
+        "NIFI_PASSWORD": "YOUR_PASSWORD_HERE",
+        "NIFI_VERIFY_SSL": "false",
+        "MCP_MODE": "readonly",
+        "MCP_AUDIT_LOG": "true",
+        "MCP_AUDIT_LOG_PATH": "./logs/audit.log"
+      }
+    }
+  }
+}
