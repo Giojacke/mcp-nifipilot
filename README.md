@@ -20,7 +20,7 @@ NiFiPilot exposes Apache NiFi's REST API as MCP tools so any compatible AI agent
 - **Control** start/stop individual processors or entire process groups
 - **Audit** every action — every tool call is written to a structured JSON log
 
-![Pipeline-Demo-CodHector — created by AI via NiFiPilot](docs/assets/pipeline-demo.png)
+![Pipeline-Demo-CodHector — created by AI via NiFiPilot](docs/assets/logo%20(2).png)
 *Pipeline completo creado por IA: GenerateFlowFile → UpdateAttribute → EvaluateJsonPath → LogAttribute → PutFile*
 
 ---
