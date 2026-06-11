@@ -1,3 +1,4 @@
+import json
 from unittest.mock import MagicMock, patch
 
 from nifi_mcp.tools.write import (
@@ -197,6 +198,32 @@ def test_delete_process_group_running_raises():
             assert "3" in str(exc)
 
     MockApi.return_value.remove_process_group.assert_not_called()
+
+
+# ── audit redaction ───────────────────────────────────────────────────────────
+
+def test_update_processor_redacts_sensitive_properties_in_audit_log():
+    """update_processor with DB_PASSWORD in properties must log ***REDACTED***, not the real value."""
+    import nifi_mcp.security.audit as audit_mod
+
+    current = _make_processor_entity()
+    updated = _make_processor_entity()
+
+    logged_entries = []
+
+    def capture(msg):
+        logged_entries.append(json.loads(msg))
+
+    with patch("nipyapi.nifi.ProcessorsApi") as MockApi, \
+         patch.object(audit_mod._logger, "info", side_effect=capture):
+        MockApi.return_value.get_processor.return_value = current
+        MockApi.return_value.update_processor.return_value = updated
+        update_processor(processor_id="proc-1", properties={"DB_PASSWORD": "secret"})
+
+    assert logged_entries, "audit logger was never called"
+    props = logged_entries[0]["params"]["properties"]
+    assert props["DB_PASSWORD"] == "***REDACTED***", f"expected REDACTED, got: {props['DB_PASSWORD']}"
+    assert "secret" not in json.dumps(logged_entries[0])
 
 
 def test_delete_process_group_dry_run():

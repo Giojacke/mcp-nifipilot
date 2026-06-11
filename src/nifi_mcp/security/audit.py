@@ -1,5 +1,6 @@
 import json
 import logging
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -7,6 +8,20 @@ from nifi_mcp.config import settings
 
 _logger = logging.getLogger("nifi_mcp.audit")
 _logger.addHandler(logging.NullHandler())
+
+_SENSITIVE = re.compile(r"password|secret|token|credential|key|auth", re.IGNORECASE)
+
+
+def _redact(params: dict) -> dict:
+    result = {}
+    for k, v in params.items():
+        if _SENSITIVE.search(str(k)):
+            result[k] = "***REDACTED***"
+        elif isinstance(v, dict):
+            result[k] = _redact(v)
+        else:
+            result[k] = v
+    return result
 
 
 def _setup() -> None:
@@ -33,7 +48,7 @@ def log_call(
     entry = {
         "ts": datetime.now(tz=timezone.utc).isoformat(),
         "tool": tool,
-        "params": params,
+        "params": _redact(params),
         "result": result,
         "error": error,
     }
