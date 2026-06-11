@@ -4,6 +4,7 @@ from nifi_mcp.tools.write import (
     create_connection,
     create_process_group,
     create_processor,
+    delete_process_group,
     delete_processor,
     update_processor,
 )
@@ -26,6 +27,15 @@ def _make_created_proc(id="proc-new", name="GetFile", type="org.apache.nifi.proc
     r.component.type = type
     r.component.state = state
     return r
+
+
+def _make_process_group_entity(id="pg-1", name="MyGroup", running_count=0, revision_version=1):
+    e = MagicMock()
+    e.id = id
+    e.component.name = name
+    e.status.aggregate_snapshot.running_count = running_count
+    e.revision.version = revision_version
+    return e
 
 
 def _make_processor_entity(id="proc-1", name="GetFile", run_status="STOPPED", revision_version=3):
@@ -157,3 +167,48 @@ def test_delete_processor_running_raises():
             assert "RUNNING" in str(exc)
 
     MockApi.return_value.delete_processor.assert_not_called()
+
+
+# ── delete_process_group ──────────────────────────────────────────────────────
+
+def test_delete_process_group_stopped():
+    current = _make_process_group_entity("pg-del", "Test-CodHector", running_count=0, revision_version=4)
+
+    with patch("nipyapi.nifi.ProcessGroupsApi") as MockApi:
+        MockApi.return_value.get_process_group.return_value = current
+        result = delete_process_group("pg-del")
+
+    MockApi.return_value.remove_process_group.assert_called_once_with(
+        id="pg-del", version="4"
+    )
+    assert result["deleted_id"] == "pg-del"
+    assert result["name"] == "Test-CodHector"
+
+
+def test_delete_process_group_running_raises():
+    current = _make_process_group_entity("pg-run", "ActiveGroup", running_count=3)
+
+    with patch("nipyapi.nifi.ProcessGroupsApi") as MockApi:
+        MockApi.return_value.get_process_group.return_value = current
+        try:
+            delete_process_group("pg-run")
+            assert False, "should have raised"
+        except RuntimeError as exc:
+            assert "3" in str(exc)
+
+    MockApi.return_value.remove_process_group.assert_not_called()
+
+
+def test_delete_process_group_dry_run():
+    import nifi_mcp.tools.write as w
+
+    current = _make_process_group_entity("pg-dry", "DryGroup")
+
+    with patch.object(type(w.settings), "mcp_dry_run", new_callable=lambda: property(lambda self: True)), \
+         patch("nipyapi.nifi.ProcessGroupsApi") as MockApi:
+        MockApi.return_value.get_process_group.return_value = current
+        result = w.delete_process_group("pg-dry")
+
+    MockApi.return_value.remove_process_group.assert_not_called()
+    assert result["dry_run"] is True
+    assert result["would_delete"]["id"] == "pg-dry"

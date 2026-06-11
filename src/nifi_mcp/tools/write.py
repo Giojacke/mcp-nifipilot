@@ -259,3 +259,42 @@ def delete_processor(processor_id: str) -> dict:
     except Exception:
         logger.error("delete_processor failed — processor_id: %s", processor_id, exc_info=True)
         raise
+
+
+@mcp.tool()
+def delete_process_group(group_id: str) -> dict:
+    """Delete a process group by ID. All processors inside must be stopped and queues empty.
+
+    Fetches the current revision automatically.
+
+    Endpoint: DELETE /nifi-api/process-groups/{id}
+    Permissions: full
+    """
+    ensure_authenticated()
+    try:
+        require_permission("delete_process_group")
+        params = {"group_id": group_id}
+
+        current = nipyapi.nifi.ProcessGroupsApi().get_process_group(id=group_id)
+        group_name = _attr(current, "component", "name", default=group_id)
+        snap = _attr(current, "status", "aggregate_snapshot")
+        running_count = _attr(snap, "running_count", default=0)
+
+        if settings.mcp_dry_run:
+            audit.log_call("delete_process_group", params, "dry_run")
+            return {"dry_run": True, "would_delete": {"id": group_id, "name": group_name}}
+
+        if running_count and running_count > 0:
+            raise RuntimeError(
+                f"Process group '{group_name}' has {running_count} running component(s) — stop them before deleting."
+            )
+
+        nipyapi.nifi.ProcessGroupsApi().remove_process_group(
+            id=group_id,
+            version=str(current.revision.version),
+        )
+        audit.log_call("delete_process_group", params, f"deleted {group_id}")
+        return {"deleted_id": group_id, "name": group_name}
+    except Exception:
+        logger.error("delete_process_group failed — group_id: %s", group_id, exc_info=True)
+        raise

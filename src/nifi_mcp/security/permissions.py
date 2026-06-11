@@ -6,6 +6,7 @@ _WRITE_TOOLS: frozenset[str] = frozenset({
     "update_processor",
     "create_connection",
     "delete_processor",
+    "delete_process_group",
 })
 
 _CONTROL_TOOLS: frozenset[str] = frozenset({
