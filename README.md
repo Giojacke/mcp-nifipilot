@@ -4,7 +4,7 @@
 
 MCP (Model Context Protocol) server for Apache NiFi 2.2.0. Lets AI agents inspect, build, and control NiFi flows safely and auditably via 17 ready-to-use tools.
 
-[![Tests](https://img.shields.io/badge/tests-36%20passed-brightgreen)](tests/)
+[![Tests](https://img.shields.io/badge/tests-37%20passed-brightgreen)](tests/)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](pyproject.toml)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![NiFi](https://img.shields.io/badge/NiFi-2.2.0-orange)](https://nifi.apache.org)
@@ -33,7 +33,7 @@ NiFiPilot exposes Apache NiFi's REST API as MCP tools so any compatible AI agent
 - **Structured audit log** — every tool call logged with params, result, and timestamp
 - **Lazy authentication** — JWT token acquired on first call, refreshed automatically on 401
 - **Transports** — stdio (local clients) and SSE (Docker/remote)
-- **36 unit tests** — no live NiFi required
+- **37 unit tests** — no live NiFi required
 
 ---
 
@@ -216,7 +216,7 @@ ruff check src tests
 ruff format src tests
 ```
 
-Tests mock nipyapi at the API class level — 36 tests, no live NiFi required. Integration tests can be added in `tests/integration/` (excluded from the default test run).
+Tests mock nipyapi at the API class level — 37 tests, no live NiFi required. Integration tests can be added in `tests/integration/` (excluded from the default test run).
 
 ---
 
