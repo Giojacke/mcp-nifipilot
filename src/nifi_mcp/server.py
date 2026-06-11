@@ -13,6 +13,7 @@ mcp = FastMCP(
 
 # Tools register themselves when their module is imported.
 from nifi_mcp.tools import control, read, write  # noqa: F401
+from nifi_mcp.client.nifi_client import client  # noqa: F401
 
 
 def main() -> None:

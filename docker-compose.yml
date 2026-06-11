@@ -13,7 +13,7 @@ services:
     networks:
       - nifi-mcp-net
     healthcheck:
-      test: ["CMD-SHELL", "curl -sf -k https://nifi:8443/nifi-api/system-diagnostics || exit 1"]
+      test: ["CMD-SHELL", "curl -sk -o /dev/null -w '%{http_code}' https://nifi:8443/nifi-api/system-diagnostics | grep -qE '(200|401)' || exit 1"]  
       interval: 30s
       timeout: 10s
       retries: 15

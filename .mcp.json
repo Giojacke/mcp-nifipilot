@@ -1,13 +1,8 @@
 {
   "mcpServers": {
     "nifi-mcp": {
-      "command": "docker",
-      "args": [
-        "exec", "-i",
-        "-e", "MCP_TRANSPORT=stdio",
-        "mcp_apache_nifi-mcp-1",
-        "nifi-mcp"
-      ]
+      "type": "sse",
+      "url": "http://localhost:8000/sse"
     }
   }
 }
