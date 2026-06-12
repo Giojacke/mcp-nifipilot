@@ -9,6 +9,7 @@ MCP (Model Context Protocol) server for Apache NiFi 2.2.0. Lets AI agents inspec
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![NiFi](https://img.shields.io/badge/NiFi-2.2.0-orange)](https://nifi.apache.org)
 [![PyPI](https://img.shields.io/pypi/v/nifi-mcp)](https://pypi.org/project/nifi-mcp/)
+[![VS Code](https://img.shields.io/visual-studio-marketplace/v/CodHector.nifipilot?label=VS%20Code)](https://marketplace.visualstudio.com/items?itemName=CodHector.nifipilot)
 
 ---
 
@@ -184,6 +185,8 @@ The `.mcp.json` at the project root is pre-configured. Fill in your password:
 ```
 
 ### VS Code
+
+Install from VS Code Marketplace: [NiFiPilot — AI Copilot for Apache NiFi](https://marketplace.visualstudio.com/items?itemName=CodHector.nifipilot)
 
 Copy `.vscode/mcp.json` (included) and fill in your password.
 
