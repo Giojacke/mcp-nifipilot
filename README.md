@@ -21,10 +21,10 @@ NiFiPilot exposes Apache NiFi's REST API as MCP tools so any compatible AI agent
 - **Audit** every action — every tool call is written to a structured JSON log
 
 ![Pipeline-Demo-CodHector — created by AI via NiFiPilot](docs/assets/pipeline-demo.png)
-*Pipeline completo creado por IA: GenerateFlowFile → UpdateAttribute → EvaluateJsonPath → LogAttribute → PutFile*
+*Full pipeline created by AI: GenerateFlowFile → UpdateAttribute → EvaluateJsonPath → LogAttribute → PutFile*
 
 ![NiFiPilot en VS Code](docs/assets/vscode-demo.png)
-*NiFiPilot conectado a VS Code — Claude ejecutando tools MCP con NiFi visible en tiempo real*
+*NiFiPilot in VS Code — Claude executing MCP tools with NiFi canvas visible in real time*
 
 ---
 
