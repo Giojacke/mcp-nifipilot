@@ -8,6 +8,7 @@ MCP (Model Context Protocol) server for Apache NiFi 2.2.0. Lets AI agents inspec
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](pyproject.toml)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![NiFi](https://img.shields.io/badge/NiFi-2.2.0-orange)](https://nifi.apache.org)
+[![PyPI](https://img.shields.io/pypi/v/nifi-mcp)](https://pypi.org/project/nifi-mcp/)
 
 ---
 
