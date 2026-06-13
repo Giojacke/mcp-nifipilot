@@ -7,7 +7,7 @@ packages = ["src/nifi_mcp"]
 
 [project]
 name = "nifipilot"
-version = "0.1.0"
+version = "0.1.1"
 description = "MCP server for Apache NiFi 2.2.0 — lets AI agents inspect and control NiFi flows"
 readme = "README.md"
 requires-python = ">=3.11"
