@@ -263,6 +263,7 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for design decisions and the C4 diagrams.
 - [ ] `NiFiClient` as real façade (tools currently call nipyapi directly)
 - [ ] Integration tests against live NiFi
 - [ ] Azure DevOps MCP bridge for CI/CD of NiFi flows
+- [ ] `get_processor_details` — expose full processor config with exact property names for NiFi 2.x compatibility
 
 ---
 
