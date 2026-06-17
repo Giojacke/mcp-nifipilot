@@ -227,6 +227,30 @@ Tests mock nipyapi at the API class level — 37 tests, no live NiFi required. I
 
 ---
 
+## Agent Skill
+
+NiFiPilot includes an agent skill — a structured instruction set
+that teaches AI agents how to use the MCP tools safely and effectively.
+
+Located at [`skills/nifipilot-agent.md`](skills/nifipilot-agent.md), it covers:
+
+- Standard workflows (create, modify, control, debug)
+- Golden rules for safe operation
+- Common processor types reference
+- Production mode guidelines
+- Example prompts to get started
+
+### Quick start with the skill
+
+**Claude Code:**
+Add to your `CLAUDE.md`.
+
+**VS Code:**
+Pin `skills/nifipilot-agent.md` to the chat context before
+starting a NiFi session.
+
+---
+
 ## Architecture
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for design decisions and the C4 diagrams.
